@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  api:
+    image: ndissanayake/restaurant-backend
+    ports: 
+      - '8000:8000'
+    networks:
+      - restaurant
+    depends_on:
+      - mongo
+
+  client:
+    image: ndissanayake/restaurant-frontend
+    stdin_open: true
+    ports:
+      - '3000:3000'
+    networks:
+      - restaurant
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - '27017:27017'
+    networks:
+      - restaurant
+    volumes:
+      - mongo-data:/data/db
+    
+networks:
+  restaurant:
+    driver: bridge
+
+volumes:
+  mongo-data:
+    driver: local
